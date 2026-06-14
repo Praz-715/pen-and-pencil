@@ -13,15 +13,6 @@ export default defineNuxtConfig({
     plugins: [tailwindcss()],
   },
 
-  nitro: {
-    // sharp ships native binaries; force Nitro to trace them into the Vercel
-    // serverless bundle, otherwise the OG-image route 500s at runtime
-    // ("Cannot find module 'sharp'"). See server/routes/og/[id].get.ts.
-    externals: {
-      traceInclude: ['sharp'],
-    },
-  },
-
   fonts: {
     families: [
       { name: 'Fraunces', provider: 'google', weights: [400, 500, 600, 700], styles: ['normal', 'italic'] },
