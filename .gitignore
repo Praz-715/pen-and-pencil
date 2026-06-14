@@ -1,0 +1,34 @@
+# Nuxt dev/build outputs
+.output
+.data
+.nuxt
+.nitro
+.cache
+dist
+
+# Node dependencies
+node_modules
+
+# Logs
+logs
+*.log
+
+# Misc
+.DS_Store
+.fleet
+.idea
+.vercel
+
+# Local env files
+.env
+.env.*
+!.env.example
+
+# Seller-uploaded product images (dev only; prod uses Vercel Blob)
+public/img/uploads
+
+# Local agent / editor tooling (not part of the app)
+.agents
+.claude
+.gemini
+skills-lock.json
