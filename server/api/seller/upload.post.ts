@@ -22,6 +22,11 @@ export default defineEventHandler(async (event) => {
 
   let webp: Buffer
   try {
+    // See server/routes/og/[id].get.ts — force nft to bundle sharp's Linux binary.
+    try {
+      // @ts-ignore — optional platform binary, only installed on Linux (Vercel)
+      await import('@img/sharp-linux-x64')
+    } catch {}
     const { default: sharp } = await import('sharp')
     webp = await sharp(file.data)
       .rotate()

@@ -16,6 +16,13 @@ export default defineEventHandler(async (event) => {
   const siteUrl = useRuntimeConfig(event).public.siteUrl as string
 
   try {
+    // Help @vercel/nft bundle sharp's Linux binary into the serverless function:
+    // sharp loads it via a computed require() nft can't follow, so we reference the
+    // literal specifier here (traceable). try/catch makes it a no-op off Linux.
+    try {
+      // @ts-ignore — optional platform binary, only installed on Linux (Vercel)
+      await import('@img/sharp-linux-x64')
+    } catch {}
     const { default: sharp } = await import('sharp')
     const product = Number.isFinite(id) ? await getProductDb(id) : undefined
     if (!product) return sendRedirect(event, '/og-cover.jpg', 302)
