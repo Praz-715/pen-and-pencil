@@ -1,6 +1,5 @@
 import { mkdir, writeFile } from 'node:fs/promises'
 import { join } from 'node:path'
-import sharp from 'sharp'
 
 // Convert any PNG/JPG/etc to WebP, then persist it:
 //   • Production (Vercel) → Vercel Blob (the serverless filesystem is read-only).
@@ -23,6 +22,7 @@ export default defineEventHandler(async (event) => {
 
   let webp: Buffer
   try {
+    const { default: sharp } = await import('sharp')
     webp = await sharp(file.data)
       .rotate()
       .resize(1400, 1400, { fit: 'inside', withoutEnlargement: true })

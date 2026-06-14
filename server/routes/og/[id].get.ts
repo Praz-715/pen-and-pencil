@@ -1,4 +1,3 @@
-import sharp from 'sharp'
 import { getCollection } from '~~/app/utils/catalog'
 import { formatRupiah } from '~~/app/utils/format'
 
@@ -17,6 +16,7 @@ export default defineEventHandler(async (event) => {
   const siteUrl = useRuntimeConfig(event).public.siteUrl as string
 
   try {
+    const { default: sharp } = await import('sharp')
     const product = Number.isFinite(id) ? await getProductDb(id) : undefined
     if (!product) return sendRedirect(event, '/og-cover.jpg', 302)
 
