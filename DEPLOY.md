@@ -48,9 +48,17 @@ Lalu jalankan (sekali saja, dari mesin lokal):
 ```bash
 npm run db:push:prod    # buat tabel di Turso
 npm run db:seed:prod    # seller + 36 produk + data demo realistis
+npm run og:gen          # generate kartu OG statis → public/og/<id>.jpg (lalu commit)
 ```
 
 > `db:seed:prod` = seller seed → products seed → demo seed (order semua status + omzet + notif).
+>
+> ⚠️ **OG image & sharp di Vercel:** `sharp` (native binary) **tidak bisa dimuat** di runtime
+> serverless Vercel, jadi route dinamis `/og/<id>.jpg` selalu fallback ke `/og-cover.jpg`. Solusi:
+> **pre-generate kartu OG secara lokal** (`npm run og:gen`, sharp jalan di Windows/Mac) ke
+> `public/og/<id>.jpg` lalu **commit** — Vercel menyajikannya sebagai file statis (dilayani sebelum
+> fungsi). **Tiap kali nambah/ubah produk, jalankan `og:gen` lagi & commit.** Route dinamis tetap
+> ada sebagai fallback anggun (302 → og-cover) untuk produk tanpa kartu.
 
 ## Langkah 3 — Deploy ke Vercel 🔑
 

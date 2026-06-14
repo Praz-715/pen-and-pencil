@@ -64,6 +64,15 @@ Desain **hitam-putih editorial** (B&W only), copy Bahasa Indonesia, IDR. Sudah *
 
 9. **Stok = sumber kebenaran tunggal** untuk batas qty. JANGAN hardcode batas (dulu ada `MAX_QTY=10` → bikin tak konsisten).
 
+10. **`sharp` TIDAK jalan di runtime Vercel** (binary native `@img/sharp-*` di-load lewat `require`
+    dinamis yang tak bisa di-trace `@vercel/nft`). Akibatnya route OG dinamis `/og/<id>.jpg` selalu
+    fallback ke `/og-cover.jpg` di produksi. **Jangan** coba `nitro.externals.traceInclude:['sharp']`
+    (malah bikin build Vercel gagal — di-resolve sebagai path file). **Solusi yang dipakai:**
+    pre-generate kartu OG statis (`npm run og:gen` → `public/og/<id>.jpg`, sharp jalan di lokal),
+    **commit**; Vercel menyajikannya sebagai file statis. Route dinamis tetap ada sbg fallback. **Tiap
+    nambah/ubah produk → `npm run og:gen` + commit.** (Upload gambar penjual di prod juga butuh sharp →
+    sama-sama kena; untuk demo aman karena 36 produk seed sudah punya kartu.)
+
 ---
 
 ## 3. Cara jalanin & akun uji
